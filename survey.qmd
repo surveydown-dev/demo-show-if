@@ -1,0 +1,138 @@
+---
+server: shiny
+filters: [surveydown]
+---
+
+```{r}
+#| context: setup
+#| echo: false
+#| warning: false
+#| message: false
+
+library(surveydown)
+sd_setup()
+```
+
+::: {#basic_skipping .sd-page}
+
+# Basic Skipping
+ 
+If the "**Other**" option is chosen, a question asking the other penguin type will appear. This is done by using the `show_if()` argument in `config()`.
+
+```{r}
+sd_question(
+  type  = 'mc',
+  id    = 'penguins_basic',
+  label = "Which is your favorite type of penguin?",
+  option = c(
+    'Adélie'    = 'adelie',
+    'Chinstrap' = 'chinstrap',
+    'Gentoo'    = 'gentoo',
+    'Other'     = 'other'
+  )
+)
+
+sd_question(
+  type  = "text",
+  id    = "penguins_other_basic",
+  label = "Please specify the other penguin type:"
+)
+```
+
+<br>
+
+```{r}
+sd_next(next_page = 'custom_skipping')
+```
+
+:::
+
+::: {#custom_skipping .sd-page}
+
+# Custom Skipping
+ 
+Say that we want to have a more complicated condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom()` argument in `config()`. We also made a custom function called `show_other()` to support the logic.
+
+```{r}
+sd_question(
+  type  = 'mc',
+  id    = 'penguins_custom',
+  label = "Which is your favorite type of penguin?",
+  option = c(
+    'Adélie'    = 'adelie',
+    'Chinstrap' = 'chinstrap',
+    'Gentoo'    = 'gentoo',
+    'Other'     = 'other'
+  )
+)
+
+sd_question(
+  type  = 'mc',
+  id    = 'show_other_custom',
+  label = "Should we show the 'other' option question?",
+  option = c(
+    'Show' = 'show',
+    'Hide' = 'hide'
+  )
+)
+
+sd_question(
+  type  = "text",
+  id    = "penguins_other_custom",
+  label = "Please specify the other penguin type:"
+)
+```
+
+<br>
+
+```{r}
+sd_next(next_page = 'end')
+```
+
+:::
+
+::: {#end .sd-page}
+
+## This is the end of the demo survey showcasing the `show_if()` feature.
+
+:::
+
+```{r}
+#| context: server
+
+# Custom function for show_if_custom()
+show_other <- function(input) {
+  return(input$penguins_custom == "other" & input$show_other_custom == "show")
+}
+
+# Configs including show_if() and show_if_custom() logic
+config <- sd_config(
+  show_if = tibble::tribble(
+    ~question_id,     ~question_value, ~target,
+    "penguins_basic", "other",         "penguins_other_basic"
+  ),
+  show_if_custom = list(
+    list(condition = show_other, target = "penguins_other_custom")
+  ),
+  all_questions_required = TRUE
+)
+
+# Database left blank
+db <- sd_database(
+  host       = "",
+  db_name    = "",
+  port       = "",
+  user       = "",
+  table_name = "",
+  pause      = TRUE
+)
+
+# Server definition (must have, don't change)
+sd_server(
+  input   = input,
+  output  = output,
+  session = session,
+  config  = config,
+  db      = db
+)
+```
