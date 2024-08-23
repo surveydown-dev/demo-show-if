@@ -120,7 +120,7 @@ config <- sd_config(
 # Database left blank
 db <- sd_database(
   host       = "",
-  db_name    = "",
+  dbname     = "",
   port       = "",
   user       = "",
   table_name = "",
