@@ -123,7 +123,7 @@ db <- sd_database(
   dbname     = "",
   port       = "",
   user       = "",
-  table_name = "",
+  table      = "",
   pause      = TRUE
 )
 
