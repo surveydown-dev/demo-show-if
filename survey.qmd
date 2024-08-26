@@ -9,7 +9,16 @@ filters: [surveydown]
 #| warning: false
 #| message: false
 
+# Run this in your R Console to install the latest version of the package:
+# remotes::install_github("surveydown-dev/surveydown", force = TRUE)
+
+# Run this to install or update the Quarto extension to the latest version:
+# surveydown::sd_update_extension()
+
+# Load the package
 library(surveydown)
+
+# Run initial setup function (essential - do not delete)
 sd_setup()
 ```
 
@@ -100,12 +109,43 @@ sd_next(next_page = 'end')
 ```{r}
 #| context: server
 
+##################
+# database setup #
+##################
+
+# surveydown stores data on a database that you define at https://supabase.com/
+# To connect to a database to store the survey data, update this with details
+# from your supabase account and database. For this demo, we set pause = TRUE
+# which will ignore the other settings and won't attempt to connect to
+# the database. See documentation for details at
+# https://surveydown.org/store-data
+
+db <- sd_database(
+  host   = "",
+  dbname = "",
+  port   = "",
+  user   = "",
+  table  = "",
+  pause  = TRUE
+)
+
+################
+# config setup #
+################
+
+# Use the sd_config() function to customize features in your survey, like
+# logic to conditionally display questions or skip to pages based on responses
+# to skip other questions in your survey. See documentation for details at
+# https://surveydown.org/config
+
 # Custom function for show_if_custom()
+
 show_other <- function(input) {
   return(input$penguins_custom == "other" & input$show_other_custom == "show")
 }
 
 # Configs including show_if() and show_if_custom() logic
+
 config <- sd_config(
   show_if = tibble::tribble(
     ~question_id,     ~question_value, ~target,
@@ -117,17 +157,12 @@ config <- sd_config(
   all_questions_required = TRUE
 )
 
-# Database left blank
-db <- sd_database(
-  host       = "",
-  dbname     = "",
-  port       = "",
-  user       = "",
-  table      = "",
-  pause      = TRUE
-)
+####################################
+# Don't change anything below here #
+####################################
 
-# Server definition (must have, don't change)
+# The sd_server function initiates your survey - don't change this
+
 sd_server(
   input   = input,
   output  = output,
