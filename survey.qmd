@@ -26,7 +26,9 @@ sd_setup()
 
 # Basic Skipping
  
-If the "**Other**" option is chosen, a question asking the other penguin type will appear. This is done by using the `show_if()` argument in `config()`.
+If the "**Other**" option is chosen, a question asking the other penguin type will appear. 
+
+This is done by using the `show_if` argument in `sd_config()`.
 
 ```{r}
 sd_question(
@@ -60,7 +62,7 @@ sd_next(next_page = 'custom_skipping')
 
 # Custom Skipping
  
-Say that we want to have a more complicated condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom()` argument in `config()`. We also made a custom function called `show_other()` to support the logic.
+Say that we want to have a more complicated condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom` argument in `sd_config()`. We also made a custom function called `show_other()` to facilitate the logic (see the server code chunk).
 
 ```{r}
 sd_question(
@@ -102,7 +104,7 @@ sd_next(next_page = 'end')
 
 ::: {#end .sd-page}
 
-## This is the end of the demo survey showcasing the `show_if()` feature.
+## This is the end of the demo survey showcasing the conditional display feature.
 
 :::
 
@@ -153,8 +155,7 @@ config <- sd_config(
   ),
   show_if_custom = list(
     list(condition = show_other, target = "penguins_other_custom")
-  ),
-  all_questions_required = TRUE
+  )
 )
 
 ####################################
