@@ -22,9 +22,9 @@ library(surveydown)
 sd_setup()
 ```
 
-::: {#basic_skipping .sd-page}
+::: {#basic_showif .sd-page}
 
-# Basic Skipping
+# Basic Conditional Display
  
 If the "**Other**" option is chosen, a question asking the other penguin type will appear. 
 
@@ -53,16 +53,16 @@ sd_question(
 <br>
 
 ```{r}
-sd_next(next_page = 'custom_skipping')
+sd_next(next_page = 'custom_showif')
 ```
 
 :::
 
-::: {#custom_skipping .sd-page}
+::: {#custom_showif .sd-page}
 
-# Custom Skipping
+# Custom Conditional Display
  
-Say that we want to have a more complicated condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom` argument in `sd_config()`. We also made a custom function called `show_other()` to facilitate the logic (see the server code chunk).
+Say that we want to have a more complicated show_if condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom` argument in `sd_config()`. We also made a custom function called `show_other()` to facilitate the logic (see the server code chunk).
 
 ```{r}
 sd_question(
