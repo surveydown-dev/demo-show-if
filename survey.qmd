@@ -155,7 +155,8 @@ config <- sd_config(
   ),
   show_if_custom = list(
     list(condition = show_other, target = "penguins_other_custom")
-  )
+  ),
+  all_questions_required = TRUE
 )
 
 ####################################
