@@ -55,9 +55,11 @@ db <- sd_database(
 
 # Demo survey of the `show_if` feature
 
-> This is a demo survey showcasing the functionality of <a href="https://surveydown.org" target="_blank">surveydown</a>. It doesn't collect any data.
->
-> The GitHub repo of this demo can be accessed <a href="https://github.com/surveydown-dev/demo-show-if" target="_blank">here</a>.
+::: {.callout-note}
+This is a demo survey showcasing the functionality of <a href="https://surveydown.org" target="_blank">surveydown</a>. It doesn't collect any data.
+
+The GitHub repo of this demo can be accessed <a href="https://github.com/surveydown-dev/demo-show-if" target="_blank">here</a>.
+:::
 
 ## Basic Conditional Display
 If the "**Other**" option is chosen, a question asking the other penguin type will appear. 
@@ -82,11 +84,7 @@ sd_question(
   id    = "penguins_other_basic",
   label = "Please specify the other penguin type:"
 )
-```
 
-<br>
-
-```{r}
 sd_next(next_page = 'custom_showif')
 ```
 
@@ -126,11 +124,7 @@ sd_question(
   id    = "penguins_other_custom",
   label = "Please specify the other penguin type:"
 )
-```
 
-<br>
-
-```{r}
 sd_next(next_page = 'end')
 ```
 
