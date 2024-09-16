@@ -1,0 +1,59 @@
+# remotes::install_github("surveydown-dev/surveydown", force = TRUE)
+library(surveydown)
+
+# Database setup
+
+# surveydown stores data on a database that you define at https://supabase.com/
+# To connect to a database, update the sd_database() function with details
+# from your supabase database. For this demo, we set ignore = TRUE, which will
+# ignore the settings and won't attempt to connect to the database. This is
+# helpful for local testing if you don't want to record testing data in the
+# database table. See the documentation for details:
+# https://surveydown.org/store-data
+
+db <- sd_database(
+  host   = "",
+  dbname = "",
+  port   = "",
+  user   = "",
+  table  = "",
+  ignore = TRUE
+)
+
+# User interface setup
+# Use the sd_ui() function to customize the look and feel of your survey
+
+ui <- sd_ui()
+
+# Server setup
+
+server <- function(input, output, session) {
+
+    show_other <- function(input) {
+        return(input$penguins_custom == "other" & input$show_other_custom == "show")
+    }
+
+    config <- sd_config(
+        show_if = tibble::tribble(
+            ~question_id,     ~question_value, ~target,
+            "penguins_basic", "other",         "penguins_other_basic"
+        ),
+        show_if_custom = list(
+            list(condition = show_other, target = "penguins_other_custom")
+        ),
+        all_questions_required = TRUE
+    )
+
+    # The sd_server() function initiates your survey - don't change this
+
+    sd_server(
+        input   = input,
+        output  = output,
+        session = session,
+        config  = config,
+        db      = db
+    )
+
+}
+
+shiny::shinyApp(ui = ui, server = server)

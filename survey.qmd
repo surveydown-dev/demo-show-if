@@ -1,54 +1,14 @@
 ---
-server: shiny
-filters: [surveydown]
+format:
+  html:
+    self-contained: true
+echo: false
+message: false
+warning: false
 ---
 
 ```{r}
-#| context: setup
-#| echo: false
-#| warning: false
-#| message: false
-
-################
-# Installation #
-################
-
-# Run this in your R Console to install the latest version of the package:
-# remotes::install_github("surveydown-dev/surveydown", force = TRUE)
-
-# Run this to install or update the Quarto extension to the latest version:
-# surveydown::sd_update_extension()
-
-#################
-# Load packages #
-#################
-
-# Load the package
 library(surveydown)
-
-# Run initial setup function (essential - do not delete)
-sd_setup()
-
-##################
-# Database setup #
-##################
-
-# surveydown stores data on a database that you define at https://supabase.com/
-# To connect to a database, update the sd_database() function with details
-# from your supabase database. For this demo, we set ignore = TRUE, which will
-# ignore the settings and won't attempt to connect to the database. This is
-# helpful for local testing if you don't want to record testing data in the
-# database table. See the documentation for details:
-# https://surveydown.org/store-data
-
-db <- sd_database(
-  host   = "",
-  dbname = "",
-  port   = "",
-  user   = "",
-  table  = "",
-  ignore = TRUE
-)
 ```
 
 ::: {#basic_showif .sd-page}
@@ -56,13 +16,16 @@ db <- sd_database(
 # Demo survey of the `show_if` feature
 
 ::: {.callout-note}
+
 This is a demo survey showcasing the functionality of <a href="https://surveydown.org" target="_blank">surveydown</a>. It doesn't collect any data.
 
 The GitHub repo of this demo can be accessed <a href="https://github.com/surveydown-dev/demo-show-if" target="_blank">here</a>.
+
 :::
 
 ## Basic Conditional Display
-If the "**Other**" option is chosen, a question asking the other penguin type will appear. 
+
+If the "**Other**" option is chosen, a question asking the other penguin type will appear.
 
 This is done by using the `show_if` argument in `sd_config()`.
 
@@ -93,7 +56,7 @@ sd_next(next_page = 'custom_showif')
 ::: {#custom_showif .sd-page}
 
 ## Custom Conditional Display
- 
+
 Say that we want to have a more complicated show_if condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom` argument in `sd_config()`. We also made a custom function called `show_other()` to facilitate the logic (see the server code chunk).
 
 ```{r}
@@ -135,49 +98,3 @@ sd_next(next_page = 'end')
 ## This is the end of the demo survey showcasing the conditional display feature.
 
 :::
-
-```{r}
-#| context: server
-
-################
-# config setup #
-################
-
-# Use the sd_config() function to customize features in your survey, like
-# logic to conditionally display questions or skip to pages based on responses
-# to skip other questions in your survey. See documentation for details at
-# https://surveydown.org/config
-
-# Custom function for show_if_custom()
-
-show_other <- function(input) {
-  return(input$penguins_custom == "other" & input$show_other_custom == "show")
-}
-
-# Configs including show_if() and show_if_custom() logic
-
-config <- sd_config(
-  show_if = tibble::tribble(
-    ~question_id,     ~question_value, ~target,
-    "penguins_basic", "other",         "penguins_other_basic"
-  ),
-  show_if_custom = list(
-    list(condition = show_other, target = "penguins_other_custom")
-  ),
-  all_questions_required = TRUE
-)
-
-####################################
-# Don't change anything below here #
-####################################
-
-# The sd_server function initiates your survey - don't change this
-
-sd_server(
-  input   = input,
-  output  = output,
-  session = session,
-  config  = config,
-  db      = db
-)
-```
