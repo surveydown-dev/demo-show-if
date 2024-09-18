@@ -20,13 +20,10 @@ db <- sd_database(
   ignore = TRUE
 )
 
-# User interface setup
-# Use the sd_ui() function to customize the look and feel of your survey
-
+# UI setup
 ui <- sd_ui()
 
 # Server setup
-
 server <- function(input, output, session) {
 
     show_other <- function(input) {
@@ -44,8 +41,7 @@ server <- function(input, output, session) {
         all_questions_required = TRUE
     )
 
-    # The sd_server() function initiates your survey - don't change this
-
+    # sd_server() initiates your survey - don't change it
     sd_server(
         input   = input,
         output  = output,
@@ -56,4 +52,5 @@ server <- function(input, output, session) {
 
 }
 
+# shinyApp() initiates your app - don't change it
 shiny::shinyApp(ui = ui, server = server)
