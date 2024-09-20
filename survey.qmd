@@ -48,7 +48,7 @@ sd_question(
   label = "Please specify the other penguin type:"
 )
 
-sd_next(next_page = 'custom_showif')
+sd_next()
 ```
 
 :::
@@ -88,7 +88,7 @@ sd_question(
   label = "Please specify the other penguin type:"
 )
 
-sd_next(next_page = 'end')
+sd_next()
 ```
 
 :::
@@ -98,7 +98,7 @@ sd_next(next_page = 'end')
 ## This is the end of the demo survey showcasing the conditional display feature.
 
 ```{r}
-sd_close("Exit Survey")
+sd_close()
 ```
 
 :::
