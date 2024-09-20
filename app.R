@@ -26,29 +26,30 @@ ui <- sd_ui()
 # Server setup
 server <- function(input, output, session) {
 
-    show_other <- function(input) {
-        return(input$penguins_custom == "other" & input$show_other_custom == "show")
-    }
+  show_other <- function(input) {
+    return(input$penguins_custom == "other" & input$show_other_custom == "show")
+  }
 
-    config <- sd_config(
-        show_if = tibble::tribble(
-            ~question_id,     ~question_value, ~target,
-            "penguins_basic", "other",         "penguins_other_basic"
-        ),
-        show_if_custom = list(
-            list(condition = show_other, target = "penguins_other_custom")
-        ),
-        all_questions_required = TRUE
-    )
+  config <- sd_config(
+    survey = "survey.html",
+    show_if = tibble::tribble(
+      ~question_id,     ~question_value, ~target,
+      "penguins_basic", "other",         "penguins_other_basic"
+    ),
+    show_if_custom = list(
+      list(condition = show_other, target = "penguins_other_custom")
+    ),
+    all_questions_required = TRUE
+  )
 
-    # sd_server() initiates your survey - don't change it
-    sd_server(
-        input   = input,
-        output  = output,
-        session = session,
-        config  = config,
-        db      = db
-    )
+  # sd_server() initiates your survey - don't change it
+  sd_server(
+    input   = input,
+    output  = output,
+    session = session,
+    config  = config,
+    db      = db
+  )
 
 }
 
