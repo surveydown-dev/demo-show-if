@@ -20,38 +20,22 @@ db <- sd_database(
   ignore = TRUE
 )
 
-# UI setup
-ui <- sd_ui()
-
 # Server setup
 server <- function(input, output, session) {
 
-  show_other <- function(input) {
-    return(input$penguins_custom == "other" & input$show_other_custom == "show")
-  }
-
-  config <- sd_config(
-    survey = "survey.html",
-    show_if = tibble::tribble(
-      ~question_id,     ~question_value, ~target,
-      "penguins_basic", "other",         "penguins_other_basic"
-    ),
-    show_if_custom = list(
-      list(condition = show_other, target = "penguins_other_custom")
-    ),
-    all_questions_required = TRUE
+  # Define any conditional display logic here (show a question if a condition is true)
+  sd_show_if(
+    input$penguins_simple == "other" ~ "penguins_simple_other",
+    input$penguins_complex == "other" &
+      input$show_other == "show" ~ "penguins_complex_other"
   )
 
-  # sd_server() initiates your survey - don't change it
+  # Database designation and other settings
   sd_server(
-    input   = input,
-    output  = output,
-    session = session,
-    config  = config,
-    db      = db
+    db = db
   )
 
 }
 
 # shinyApp() initiates your app - don't change it
-shiny::shinyApp(ui = ui, server = server)
+shiny::shinyApp(ui = sd_ui(), server = server)

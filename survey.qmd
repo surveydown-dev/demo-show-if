@@ -1,9 +1,6 @@
 ---
-format:
-  html:
-    self-contained: true
+format: html
 echo: false
-message: false
 warning: false
 ---
 
@@ -23,16 +20,16 @@ The GitHub repo of this demo can be accessed <a href="https://github.com/surveyd
 
 :::
 
-## Basic Conditional Display
+## Simple Conditional Display
 
 If the "**Other**" option is chosen, a question asking the other penguin type will appear.
 
-This is done by using the `show_if` argument in `sd_config()`.
+This is done by using the `sd_show_if()` function in the `server` of `app.R`.
 
 ```{r}
 sd_question(
   type  = 'mc',
-  id    = 'penguins_basic',
+  id    = 'penguins_simple',
   label = "Which is your favorite type of penguin?",
   option = c(
     'Adélie'    = 'adelie',
@@ -44,7 +41,7 @@ sd_question(
 
 sd_question(
   type  = "text",
-  id    = "penguins_other_basic",
+  id    = "penguins_simple_other",
   label = "Please specify the other penguin type:"
 )
 
@@ -55,14 +52,14 @@ sd_next()
 
 ::: {#custom_showif .sd-page}
 
-## Custom Conditional Display
+## Complex Conditional Display
 
-Say that we want to have a more complicated show_if condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is done by using the `show_if_custom` argument in `sd_config()`. We also made a custom function called `show_other()` to facilitate the logic (see the server code chunk).
+Say that we want to have a more complicated `show_if` condition. Now there are 2 questions. Only if the user chooses both "**Other**" and "**Show**" will the other penguin question appear. This is also done by using the `sd_show_if()` function in the `server` of `app.R`.
 
 ```{r}
 sd_question(
   type  = 'mc',
-  id    = 'penguins_custom',
+  id    = 'penguins_complex',
   label = "Which is your favorite type of penguin?",
   option = c(
     'Adélie'    = 'adelie',
@@ -74,7 +71,7 @@ sd_question(
 
 sd_question(
   type  = 'mc',
-  id    = 'show_other_custom',
+  id    = 'show_other',
   label = "Should we show the 'other' option question?",
   option = c(
     'Show' = 'show',
@@ -84,7 +81,7 @@ sd_question(
 
 sd_question(
   type  = "text",
-  id    = "penguins_other_custom",
+  id    = "penguins_complex_other",
   label = "Please specify the other penguin type:"
 )
 
